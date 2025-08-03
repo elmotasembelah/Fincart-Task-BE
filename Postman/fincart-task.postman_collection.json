@@ -1,0 +1,753 @@
+{
+  "info": {
+    "_postman_id": "15316c23-f84e-4b6b-a652-968ec3730892",
+    "name": "fincart-task",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "30474804"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "register user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "if (res.success && res.data) {\r",
+                  "    pm.collectionVariables.set(\"accessToken\", res.data.accessToken);\r",
+                  "    pm.collectionVariables.set(\"refreshToken\", res.data.refreshToken);\r",
+                  "    console.log(\"Tokens saved to collection variables.\");\r",
+                  "} else {\r",
+                  "    console.warn(\"Login failed or response format unexpected.\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\r\n  \"fullName\": \"Mo Ahmed\",\r\n  \"email\": \"mo.ahmed6@example.com\",\r\n  \"password\": \"StrongP@ssw0rd!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/auth/register"
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "if (res.success && res.data) {\r",
+                  "    pm.collectionVariables.set(\"accessToken\", res.data.accessToken);\r",
+                  "    pm.collectionVariables.set(\"refreshToken\", res.data.refreshToken);\r",
+                  "    console.log(\"Tokens saved to collection variables.\");\r",
+                  "} else {\r",
+                  "    console.warn(\"Login failed or response format unexpected.\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"mo.ahmed3@example.com\",\r\n    \"password\": \"StrongP@ssw0rd!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/auth/login"
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"mo.ahmed3@example.com\",\r\n    \"password\": \"StrongP@ssw0rd!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/auth/logout"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "create service",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "gym coaching 11",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "This is a service where i will review your gym session over a video call which you can use to improbe your form as you are training",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "1000",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "Coaching",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/C:/Users/wb389/Downloads/tulip banner.png"
+                }
+              ]
+            },
+            "url": "{{devBaseUrl}}/services"
+          },
+          "response": []
+        },
+        {
+          "name": "list services",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{devBaseUrl}}/services",
+              "host": ["{{devBaseUrl}}"],
+              "path": ["services"],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "fitness",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Fitness",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "2",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "list my services",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{devBaseUrl}}/services/my",
+              "host": ["{{devBaseUrl}}"],
+              "path": ["services", "my"],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "fitness",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Fitness",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "2",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get service",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{devBaseUrl}}/services/68911a8087638f583b5e03d0"
+          },
+          "response": []
+        },
+        {
+          "name": "update service",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "gym coaching1",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "This is a service where i will review your gym session over a video call which you can use to improbe your form as you are training",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "1100",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "Coaching",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/C:/Users/wb389/Downloads/Certificate.png"
+                }
+              ]
+            },
+            "url": "{{devBaseUrl}}/services/688bcb1b1bbf4f548a941ab5"
+          },
+          "response": []
+        },
+        {
+          "name": "delete service",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": "{{devBaseUrl}}/services/688e26ff9812691e91bb103c"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Slot",
+      "item": [
+        {
+          "name": "create slot",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"service\": \"688e277ced3880d4b3e05bc2\",  \r\n  \"startTime\": \"2025-08-01T11:00:00.000Z\",\r\n  \"endTime\": \"2025-08-01T11:30:00.000Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/slots"
+          },
+          "response": []
+        },
+        {
+          "name": "list slots",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{devBaseUrl}}/slots?page=1&pageSize=15",
+              "host": ["{{devBaseUrl}}"],
+              "path": ["slots"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "15"
+                },
+                {
+                  "key": "service",
+                  "value": "688e2908ed3880d4b3e05bcc",
+                  "disabled": true
+                },
+                {
+                  "key": "isBooked",
+                  "value": "false",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update slot",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"startTime\": \"2025-08-01T11:30:00.000Z\",\r\n  \"endTime\": \"2025-08-01T12:00:00.000Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/slots/688cd41c54b27e34f871e6a0"
+          },
+          "response": []
+        },
+        {
+          "name": "delete slot",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": "{{devBaseUrl}}/services"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "booking",
+      "item": [
+        {
+          "name": "create booking",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"service\": \"688e277ced3880d4b3e05bc2\",\r\n  \"slot\": \"688e2908ed3880d4b3e05bcc\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/bookings"
+          },
+          "response": []
+        },
+        {
+          "name": "list my bookings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{devBaseUrl}}/bookings/my?page=1&pageSize=15",
+              "host": ["{{devBaseUrl}}"],
+              "path": ["bookings", "my"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "15"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cancel booking",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/bookings/688e3a4197b6e1da4573481c/cancel"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "get me",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{accessToken}}"
+              }
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-refresh",
+                "value": "{{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"mo.ahmed1@example.com\",\r\n    \"password\": \"StrongP@ssw0rd!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{devBaseUrl}}/users/me"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "devBaseUrl",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    }
+  ]
+}
