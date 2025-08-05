@@ -8,6 +8,7 @@ import {
   getAllServicesController,
   updateServiceController,
   getMyServicesController,
+  deleteServiceController,
 } from "./service.controller";
 import { uploadImage } from "../../common/middleware/upload-image.middleware";
 import { validateRequest } from "../../common/middleware/validate-request.middleware";
@@ -63,7 +64,7 @@ serviceRouter.delete(
   requireUser,
   requireRole(Role.PROVIDER),
   validateRequest(deleteServiceDto),
-  getServiceController
+  deleteServiceController
 );
 
 export default serviceRouter;
